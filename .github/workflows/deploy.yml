@@ -10,6 +10,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: SSH Debug
+      run: ssh -vvv -i ~/.ssh/hng12-fastapi-key.pem ubuntu@${{ secrets.SERVER_IP }}
+      
     - name: SSH into Server and Deploy
       uses: appleboy/ssh-action@v0.1.7
       with:
