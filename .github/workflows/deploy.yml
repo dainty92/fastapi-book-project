@@ -11,24 +11,22 @@ jobs:
 
     steps:
     - name: Debug Server IP
-      run: |
-        echo "Server IP: ${{ secrets.SERVER_IP }}"
+      run: echo "Server IP: ${{ secrets.SERVER_IP }}"
 
-    - name: Add SSH Key
+    - name: Add SSH Key and Disable Host Key Checking
       run: |
         mkdir -p ~/.ssh
-        echo "${{ secrets.SSH_PRIVATE_KEY }}" | tr -d '\r' > ~/.ssh/hng12-fastapi-key.pem
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/hng12-fastapi-key.pem
         chmod 600 ~/.ssh/hng12-fastapi-key.pem
+        echo "StrictHostKeyChecking no" >> ~/.ssh/config
+        echo "UserKnownHostsFile=/dev/null" >> ~/.ssh/config
 
-    - name: SSH Debug
-      run: ssh -vvv -i ~/.ssh/hng12-fastapi-key.pem ubuntu@${{ secrets.SERVER_IP }} -p 22
-
-    - name: SSH into Server and Deploy
+    - name: Deploy to Server via SSH
       uses: appleboy/ssh-action@v0.1.7
       with:
         host: ${{ secrets.SERVER_IP }}
         username: ubuntu
-        key_path: "~/.ssh/hng12-fastapi-key.pem"
+        key: ${{ secrets.SSH_PRIVATE_KEY }}  # Use key, not key_path
         port: 22
         script: |
           cd ~/fastapi-book-project
