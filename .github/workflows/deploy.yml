@@ -10,6 +10,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Debug Server IP
+      run: echo "Server IP: ${{ secrets.SERVER_IP }}"
+
     - name: Add SSH Key
       run: |
         mkdir -p ~/.ssh
