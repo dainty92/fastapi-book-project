@@ -13,7 +13,6 @@ jobs:
     - name: Debug Server IP
       run: |
         echo "Server IP: ${{ secrets.SERVER_IP }}"
-        nslookup ${{ secrets.SERVER_IP }}
 
     - name: Add SSH Key
       run: |
