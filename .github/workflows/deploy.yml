@@ -10,8 +10,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Add SSH Key
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/hng12-fastapi-key.pem
+        chmod 600 ~/.ssh/hng12-fastapi-key.pem
+        
     - name: SSH Debug
-      run: ssh -vvv -i ~/.ssh/hng12-fastapi-key.pem ubuntu@${{ secrets.SERVER_IP }}
+      run: ssh -vvv -i ~/.ssh/hng12-fastapi-key.pem ubuntu@${{ secrets.SERVER_IP }} -p 22
       
     - name: SSH into Server and Deploy
       uses: appleboy/ssh-action@v0.1.7
