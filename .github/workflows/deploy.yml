@@ -11,7 +11,9 @@ jobs:
 
     steps:
     - name: Debug Server IP
-      run: echo "Server IP: ${{ secrets.SERVER_IP }}"
+      env:
+        SERVER_IP: ${{ secrets.SERVER_IP }}
+      run: echo "Server IP: \"$SERVER_IP\""
 
     - name: Add SSH Key
       run: |
